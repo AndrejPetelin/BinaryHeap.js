@@ -10,7 +10,7 @@ module.exports = {
     heapsort: function(data) {
         var heap = this.heapify(data);
         var ret = [];
-        for (var i = 0; i < heap.size(); ++i) {
+        for (var i = 0; i < data.length; ++i) {
             ret.push(heap.pop());
         }
         return ret;
