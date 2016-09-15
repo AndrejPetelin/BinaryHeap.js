@@ -109,7 +109,7 @@ BinaryHeap.prototype = {
     //      convenience function, iterates through argument array calling
     //      pop on each element
     //-------------------------------------------------------------------------
-    popArray(n = null) {
+    popArray: function(n = null) {
         // precondition - ensure size of heap isn't exceeded
         if (n != null && n > this.size()) {
             throw "binary_heap error: BinaryHeap.popArray(n) - n: " + n.toString() +
