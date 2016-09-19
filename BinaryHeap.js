@@ -1,6 +1,6 @@
 //=============================================================================
 //
-// PriorityQueue.js - a priority queue/binary heap implementation
+// BinaryHeap.js - a binary heap implementation
 // by Andrej Petelin @ MedMee
 // 
 // A data structure with O(log(n)) insertion and removal "from the top" that
