@@ -148,7 +148,11 @@ BinaryHeap.prototype = {
     //      modifying the heap's data
     //-------------------------------------------------------------------------
     peek: function() {
-        return this._clone(this._data[0]);
+      //  return this._clone(this._data[0]);
+      // parse.stringify does actually make a deep copy and it works (i think) in all data types.
+      // 
+      var ret = JSON.parse(JSON.stringify(this._data[0]));
+      return ret;
     },
 
 
