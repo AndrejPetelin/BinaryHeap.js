@@ -22,9 +22,13 @@ Functions:
 
 - .peek(): returns a deep copy of the top element of the heap. The returned element can safely be modified without affecting the stability of the binary heap.
    Asymptotic complexity O(1).
+   
+- .peek_unsafe(): same as peek() but does not deep-copy. Use when deep-copy doesn't work or recursion for cloning would be too deep but ensure you don't modify returned objects.
 
 - .peekArray(n): returns an array of n deep-copied elements from the heap. The function does not affect the heap, nor does modifying the elements of the returned array.
    Asymptotic complexity O(n * log(n)) where n is the number of elements being retrieved.
+   
+- .peekArray_unsafe(n): same as peekArray(n) but does not deep-copy. Use when deep-copy doesn't work or recursion for cloning would be too deep but ensure you don't modify returned objects.
 
 - .size(): returns the number of elements on the heap. Constant time.
 
