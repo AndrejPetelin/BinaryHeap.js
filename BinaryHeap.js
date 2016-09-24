@@ -409,7 +409,6 @@ BinaryHeap.prototype = {
         //-------------------------------------------------
         function clone(x) {
             // non-objects can just be returned
-            console.log(x);
             if (x == null) return x;
             if (typeof x != "object") return x;
 
