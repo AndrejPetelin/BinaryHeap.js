@@ -148,11 +148,19 @@ BinaryHeap.prototype = {
     //      modifying the heap's data
     //-------------------------------------------------------------------------
     peek: function() {
-      //  return this._clone(this._data[0]);
-      // parse.stringify does actually make a deep copy and it works (i think) in all data types.
-      // 
-      var ret = JSON.parse(JSON.stringify(this._data[0]));
-      return ret;
+        return this._clone(0);
+    },
+
+
+    //-------------------------------------------------------------------------
+    // peek(): shallow copy the top element of the heap without removing or
+    //      modifying the heap's data - needed when heap contains objects that
+    //      don't respond well to cloning - note that this is a return by
+    //      reference in case of objects, modifying the returned value can
+    //      destroy the balance of the heap
+    //-------------------------------------------------------------------------
+    peek_unsafe: function() {
+        return this._data[0];
     },
 
 
@@ -214,6 +222,67 @@ BinaryHeap.prototype = {
         return ret;
     },
 
+
+    //-------------------------------------------------------------------------
+    // peekArray(): read shallow copy n elements of the heap in order without
+    //      removing them or modifying the heap data - needed when heap
+    //      contains objects that don't respond well to cloning - note that
+    //      this is a return by reference in case of objects, modifying the
+    //      returned array values can destroy the balance of the heap
+    //-------------------------------------------------------------------------
+    peekArray_unsafe: function(n = null) {
+        // if no argument provided return entire heap in sorted order
+        if (n == null) {
+            n = this.size();
+        }
+
+        // precondition - ensure size of heap isn't exceeded
+        if (n > this.size()) {
+            throw "binary_heap error: BinaryHeap.peekArray(n) - n: " + n +
+                ", exceeds binary heap of size " + this.size();
+        }
+
+        //---------------------------------------------------------------------
+        // here we're essentially performing a shortest path algorithm
+        // minimizing over children added to the queue. The queue (binary heap) 
+        // is used for always extracting the next element, which we then add to
+        // the return array.
+
+        // quick helper function to squeeze data and ID into an object that
+        // holds the data and index of an element
+        function pack(data, index) { return { "data": data, "index": index }; }
+
+        // package comparison function for use in inner BinaryHeap compareFunc
+        const compF = this.compareFunc;
+        // queue is a BinaryHeap returning the next smallest value as data, index pair
+        var queue = new BinaryHeap(function(x, y) { return compF(x["data"], y["data"]); });
+
+        // this is where the return values go
+        var ret = new Array(n);
+
+        // count the number of elements added to the array
+        var count = 0;
+
+        // add first element
+        queue.push(pack(this._data[0], 0));
+
+        // loop until n is reached
+        while (count < n && queue.empty() == false) {
+            // get currently first element and enqueue its children
+            var curr = queue.pop();
+
+            // find and add children of current node 
+            var iChildren = this._findChildren(curr["index"]);
+            if (iChildren[0] !== null) queue.push(pack(this._data[iChildren[0]], iChildren[0]));
+            if (iChildren[1] !== null) queue.push(pack(this._data[iChildren[1]], iChildren[1]));
+
+            // shallow copy of actual data element, store in return array
+            ret[count] = this._data[curr["index"]];
+            count++;
+        }
+
+        return ret;
+    },
 
     //=========================================================================
     // PRIVATE HELPER FUNCTIONS
@@ -332,6 +401,8 @@ BinaryHeap.prototype = {
         //-------------------------------------------------
         function clone(x) {
             // non-objects can just be returned
+            console.log(x);
+            if (x == null) return x;
             if (typeof x != "object") return x;
 
             // create new instance of object ([], {})
