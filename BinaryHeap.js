@@ -1,7 +1,7 @@
 //=============================================================================
 //
 // BinaryHeap.js - a binary heap implementation
-// by Andrej Petelin @ MedMee
+// by Andrej Petelin
 // 
 // A data structure with O(log(n)) insertion and removal "from the top" that
 // maintains the minimum (or maximum) element at the beginning of the array.
