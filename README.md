@@ -1,5 +1,7 @@
 A binary heap implementation using an array to store data.
 
+- install with: npm install binary_heap
+
 The binary heap is an efficient data structure that keeps the highest/lowest element at the top. push and pop have a time complexity of O(n*log(n)).
 
 By default, BinaryHeap will maintain the lowest number at the "top" by default. Provide an alternate predicate/compare function to sort in different order or according to different criteria.
